@@ -1,15 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Akka.Actor;
+using AkkaNetSpike.Actor;
 
 namespace AkkaNetSpike
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static ActorSystem _actorSystem;
+
+        private static void Main(string[] args)
         {
+            _actorSystem = ActorSystem.Create("MovieActorSystem");
+            var props = Props.Create<PlaybackActor>();
+            var playbackActorRef = _actorSystem.ActorOf(props, nameof(PlaybackActor));
+
+            Console.ReadLine();
+
+            _actorSystem.Terminate().Wait();
         }
     }
 }
