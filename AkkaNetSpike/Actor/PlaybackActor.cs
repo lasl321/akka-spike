@@ -4,20 +4,16 @@ using AkkaNetSpike.Messages;
 
 namespace AkkaNetSpike.Actor
 {
-    internal class PlaybackActor : UntypedActor
+    internal class PlaybackActor : ReceiveActor
     {
-        protected override void OnReceive(object message)
-
+        public PlaybackActor()
         {
-            var movieMessage = message as PlayMovieMessage;
-            if (movieMessage != null)
-            {
-                var playMovieMessage = movieMessage;
-                Console.WriteLine($"Received {playMovieMessage.UserId} {playMovieMessage.MovieTitle}");
-                return;
-            }
+            Receive<PlayMovieMessage>(message => HandlePlayMovieMessage(message));
+        }
 
-            Unhandled(message);
+        private void HandlePlayMovieMessage(PlayMovieMessage message)
+        {
+            Console.WriteLine($"Received {message.UserId} {message.MovieTitle}");
         }
     }
 }
